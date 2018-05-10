@@ -1,0 +1,19 @@
+{
+  "name": "teste-docker-compose",
+  "version": "1.0.0",
+  "description": "- Docker\r - Docker Compose",
+  "private": true,
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Radu",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "hapi": "^17.4.0",
+    "mongoose": "^4.4.14"
+  }
+}
