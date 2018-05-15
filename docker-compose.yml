@@ -1,6 +1,19 @@
 version: '3'
 services:
-  
+  nginx:
+    build: ./nginx
+    ports:
+    - "8080:80"
+    depends_on:
+    - node
+  node:
+    build: .
+    ports:
+    - "4000:4000"
+    volumes:
+    - .:/app
+    depends_on:
+    - mongodb
   mongodb:
     image: mongo:latest
     container_name: "mongodb"
