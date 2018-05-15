@@ -6,16 +6,13 @@ const todoSchema = new Schema({
     type: String,
     required: true
   },
-  done: {
-    type: Boolean,
-    default: false
-  },
-  createDate: {
-    type: Date,
-    default: Date.now
+  number_of_files: {
+    type: Number,
+	min: 1,
+    default: 1
   }
 });
 
-const Todo = mongoose.model('Todo', todoSchema);
+const Books = mongoose.model('books', todoSchema);
 
-module.exports = Todo;
+module.exports = Books;

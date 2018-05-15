@@ -1,20 +1,16 @@
 version: '3'
 services:
-  nginx:
-    build: ./nginx
-    ports:
-    - "8080:80"
-    depends_on:
-    - node
-  node:
-    build: .
-    ports:
-    - "4000:4000"
-    volumes:
-    - .:/app
-    depends_on:
-    - mongo
-  mongo:
+  
+  mongodb:
     image: mongo:latest
+    container_name: "mongodb"
+    environment:
+    - MONGO_DATA_DIR=/data/db
+    - MONGO_LOG_DIR=/dev/null
+    - MONGO_INITDB_ROOT_USERNAME=admin
+    - MONGO_INITDB_ROOT_PASSWORD=admin
     volumes:
-    - ./mongo-data:/data/db
+    - ./data/db:/data/db
+    ports:
+    - 27017:27017
+    command: mongod --smallfiles

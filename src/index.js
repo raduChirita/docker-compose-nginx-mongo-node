@@ -2,13 +2,18 @@
 const express = require('express');
 const mongoose = require('mongoose');
 //const bodyParser = require('body-parser');
-const Todo = require('./todo-model');
+var Boom    = require('boom');
+var Joi     = require('joi');
+const Books = require('./todo-model');
 const Hapi = require('hapi');
 
 const server = Hapi.server({
     port: 4000,
     host: '0.0.0.0'
 });
+
+var promise = mongoose.connect('mongodb://admin:admin@localhost:27017/admin',
+								{ useMongoClient: true });
 
 server.route({
 	config: {
@@ -19,12 +24,15 @@ server.route({
     },
     method: 'GET',
     path: '/checkDB',
-    handler: (request, h) => {
-
-        return h.response().code(200);
+    handler: (request, reply) => {
+		if (mongoose.connection.readyState == 1) {
+			return reply.response().code(200);
+		}
+		return reply.response().code(500);
     }
 });
 
+var event;
 server.route({
 	config: {
         cors: {
@@ -34,9 +42,35 @@ server.route({
     },
     method: 'POST',
     path: '/generate',
-    handler: (request, h) => {
+    handler: (request, reply) => {
+		var listDocuments= [
+		{
+        title: "test1",
+        number_of_files: "100"
+		},
+		{
+        title: "test2",
+        number_of_files: "200"
+		},
+		{
+        title: "test3",
+        number_of_files: "300"
+		}
+	];
 
-        return h.response().code(200);;
+	Books.create(listDocuments, function (err, results) {
+		reply.response(results);
+	});
+		//event = new Books();
+		//event.title = 'bookName';
+		//event.number_of_files = 123;
+		//event.save(function (err) {
+         //       if (!err) {
+         //           reply.response().code(200);
+         //       } else {
+         //           reply.response().code(403);
+         //       }
+         //   });
     }
 });
 
@@ -49,9 +83,10 @@ server.route({
     },
     method: 'GET',
     path: '/queryTime',
-    handler: (request, h) => {
-
-        return '0.0023s';
+    handler: (request, reply) => {
+		Books.count( {}, 
+		 function (err, result) {});
+		return time;
     }
 });
 
